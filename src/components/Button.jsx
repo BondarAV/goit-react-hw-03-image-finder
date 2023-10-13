@@ -8,7 +8,7 @@ export const Button = ({ loadMore, currentQuery }) => {
   };
 
   return (
-    <button type="button" onClick={handleClick}>
+    <button className="load-more" type="button" onClick={handleClick}>
       Load more
     </button>
   );

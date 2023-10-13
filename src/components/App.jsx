@@ -77,7 +77,7 @@ export class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="App">
         <Searchbar loadData={this.loadData} />
 
         {this.state.loading && <Loader />}

@@ -1,3 +1,5 @@
+import { AiOutlineSearch } from 'react-icons/ai';
+
 export const Searchbar = ({ loadData }) => {
   const isLoadMore = false;
 
@@ -11,6 +13,7 @@ export const Searchbar = ({ loadData }) => {
     <header className="Searchbar">
       <form className="form" onSubmit={hadleSubmit}>
         <button type="submit" className="button">
+          <AiOutlineSearch size={30} />
           <span className="button-label">Search</span>
         </button>
 
