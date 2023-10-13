@@ -1,12 +1,10 @@
-export const Searchbar = ({ handleQuery }) => {
+export const Searchbar = ({ loadData }) => {
   const isLoadMore = false;
 
   const hadleSubmit = event => {
     event.preventDefault();
 
-    console.log(event.target.lastChild.value);
-
-    handleQuery(event.target.lastChild.value, isLoadMore);
+    loadData(event.target.lastChild.value, isLoadMore);
   };
 
   return (
