@@ -39,7 +39,7 @@ export class App extends Component {
         } else if (query.trim() === '') {
           alert('Please, enter a non-empty query');
         } else {
-          if (!isLoadMore) this.state.images = [];
+          if (!isLoadMore) this.setState(_ => ({ images: [] }));
 
           this.sortData(response.data.hits);
 
