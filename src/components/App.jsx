@@ -8,6 +8,8 @@ import { Button } from './Button';
 import { Loader } from './Loader';
 import { Modal } from './Modal';
 
+import { perPage } from 'api';
+
 export class App extends Component {
   state = {
     images: [],
@@ -106,9 +108,11 @@ export class App extends Component {
           getTargetImgID={this.getTargetImgID}
         />
 
-        {this.state.images.length >= 12 && !this.state.loading && (
-          <Button loadMore={this.loadMore} currentQuery={this.state.query} />
-        )}
+        {this.state.images.length >= 12 &&
+          !this.state.loading &&
+          this.state.images.length >= this.state.page * perPage && (
+            <Button loadMore={this.loadMore} currentQuery={this.state.query} />
+          )}
 
         {this.state.isModalOpen && (
           <Modal
