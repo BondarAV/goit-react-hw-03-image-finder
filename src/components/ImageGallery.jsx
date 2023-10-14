@@ -1,12 +1,11 @@
 import { ImageGalleryItem } from './ImageGalleryItem';
 
-export const ImageGallery = ({ data }) => {
+export const ImageGallery = ({ data, getTargetImgID }) => {
   if (data === undefined) return;
 
   return (
-    <ul className="gallery">
+    <ul className="gallery" onClick={getTargetImgID}>
       {data.map(element => {
-        // console.log('ass', element.id);
         return (
           <ImageGalleryItem
             webformatURL={element.webformatURL}

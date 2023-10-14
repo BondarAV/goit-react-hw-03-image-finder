@@ -5,8 +5,8 @@ import { getImageList } from 'api';
 import { Searchbar } from './Searchbar';
 import { ImageGallery } from './ImageGallery';
 import { Button } from './Button';
-
 import { Loader } from './Loader';
+import { Modal } from './Modal';
 
 export class App extends Component {
   state = {
@@ -14,6 +14,8 @@ export class App extends Component {
     query: '',
     page: 1,
     loading: false,
+    targetImg: '',
+    isModalOpen: false,
   };
 
   loadMore = isLoadMore => {
@@ -75,6 +77,23 @@ export class App extends Component {
     this.setState({ loading: false });
   };
 
+  getTargetImgID = event => {
+    if (event.target.className === 'gallery') return;
+
+    const targetImgObject = this.state.images.find(
+      element => element.id === Number(event.target.id)
+    );
+
+    this.setState({
+      targetImg: targetImgObject.largeImageURL,
+      isModalOpen: true,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({ isModalOpen: false });
+  };
+
   render() {
     return (
       <div className="App">
@@ -82,10 +101,20 @@ export class App extends Component {
 
         {this.state.loading && <Loader />}
 
-        <ImageGallery data={this.state.images} />
+        <ImageGallery
+          data={this.state.images}
+          getTargetImgID={this.getTargetImgID}
+        />
 
         {this.state.images.length >= 12 && !this.state.loading && (
           <Button loadMore={this.loadMore} currentQuery={this.state.query} />
+        )}
+
+        {this.state.isModalOpen && (
+          <Modal
+            targetImg={this.state.targetImg}
+            closeModal={this.closeModal}
+          />
         )}
       </div>
     );
