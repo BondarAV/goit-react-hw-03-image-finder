@@ -62,6 +62,7 @@ export class App extends Component {
   };
 
   handleQuery = (query, isLoadMore) => {
+    // console.log('cum');
     this.setState({ loading: true });
 
     getImageList(query, this.state.page)
@@ -87,15 +88,9 @@ export class App extends Component {
     this.setState({ loading: false });
   };
 
-  getTargetImgID = event => {
-    if (event.target.className === 'gallery') return;
-
-    const targetImgObject = this.state.images.find(
-      element => element.id === Number(event.target.id)
-    );
-
+  getTargetImgID = largeImage => {
     this.setState({
-      targetImg: targetImgObject.largeImageURL,
+      targetImg: largeImage,
       isModalOpen: true,
     });
   };

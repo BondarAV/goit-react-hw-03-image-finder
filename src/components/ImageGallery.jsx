@@ -4,12 +4,14 @@ export const ImageGallery = ({ data, getTargetImgID }) => {
   if (data === undefined) return;
 
   return (
-    <ul className="gallery" onClick={getTargetImgID}>
+    <ul className="gallery">
       {data.map(element => {
         return (
           <ImageGalleryItem
             webformatURL={element.webformatURL}
             id={element.id}
+            largeImage={element.largeImageURL}
+            getTargetImgID={getTargetImgID}
           />
         );
       })}
