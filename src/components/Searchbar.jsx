@@ -1,12 +1,13 @@
 import { AiOutlineSearch } from 'react-icons/ai';
 
-export const Searchbar = ({ loadData }) => {
+export const Searchbar = ({ loadData, checkIsLoadMore }) => {
   const isLoadMore = false;
 
   const hadleSubmit = event => {
     event.preventDefault();
 
-    loadData(event.target.lastChild.value, isLoadMore);
+    loadData(event.target.lastChild.value);
+    checkIsLoadMore(isLoadMore);
   };
 
   return (

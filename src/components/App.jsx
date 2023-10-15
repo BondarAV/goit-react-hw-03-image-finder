@@ -18,24 +18,32 @@ export class App extends Component {
     loading: false,
     targetImg: '',
     isModalOpen: false,
+    isLoadMore: false,
   };
 
-  loadMore = isLoadMore => {
-    this.setState(
-      prevState => ({ page: prevState.page + 1 }),
-      () => {
-        this.handleQuery(this.state.query, isLoadMore);
-      }
-    );
+  componentDidUpdate(_, prevState) {
+    if (this.shouldUpdate(prevState)) {
+      this.handleQuery(this.state.query, this.state.isLoadMore);
+    }
+  }
+
+  shouldUpdate = prevState =>
+    prevState.query !== this.state.query || prevState.page !== this.state.page;
+
+  checkIsLoadMore = currentIsLoadMore => {
+    this.setState({ isLoadMore: currentIsLoadMore });
   };
 
-  loadData = (query, isLoadMore) => {
-    this.setState(
-      _ => ({ query: query, page: 1 }),
-      () => {
-        this.handleQuery(query, isLoadMore);
+  loadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
+  loadData = query => {
+    this.setState(prevState => {
+      if (prevState.query !== query) {
+        return { query: query, page: 1 };
       }
-    );
+    });
   };
 
   sortData = data => {
@@ -99,7 +107,10 @@ export class App extends Component {
   render() {
     return (
       <div className="App">
-        <Searchbar loadData={this.loadData} />
+        <Searchbar
+          loadData={this.loadData}
+          checkIsLoadMore={this.checkIsLoadMore}
+        />
 
         {this.state.loading && <Loader />}
 
@@ -111,7 +122,11 @@ export class App extends Component {
         {this.state.images.length >= 12 &&
           !this.state.loading &&
           this.state.images.length >= this.state.page * perPage && (
-            <Button loadMore={this.loadMore} currentQuery={this.state.query} />
+            <Button
+              loadMore={this.loadMore}
+              checkIsLoadMore={this.checkIsLoadMore}
+              currentQuery={this.state.query}
+            />
           )}
 
         {this.state.isModalOpen && (

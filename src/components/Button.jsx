@@ -1,10 +1,11 @@
-export const Button = ({ loadMore, currentQuery }) => {
+export const Button = ({ loadMore, checkIsLoadMore, currentQuery }) => {
   if (currentQuery === null || currentQuery === undefined) return;
 
   const isLoadMore = true;
 
   const handleClick = () => {
     loadMore(isLoadMore);
+    checkIsLoadMore(isLoadMore);
   };
 
   return (
