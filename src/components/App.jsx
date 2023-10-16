@@ -18,7 +18,6 @@ export class App extends Component {
     loading: false,
     targetImg: '',
     isModalOpen: false,
-    isLoadMore: false,
   };
 
   componentDidUpdate(_, prevState) {
