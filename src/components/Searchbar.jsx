@@ -1,13 +1,17 @@
 import { AiOutlineSearch } from 'react-icons/ai';
 
-export const Searchbar = ({ loadData, checkIsLoadMore }) => {
-  const isLoadMore = false;
-
+export const Searchbar = ({ handleQuery }) => {
   const hadleSubmit = event => {
     event.preventDefault();
 
-    loadData(event.target.lastChild.value);
-    checkIsLoadMore(isLoadMore);
+    const query = event.target.lastChild.value;
+
+    if (query.trim() === '') {
+      alert('Please, enter a non-empty query');
+      return;
+    }
+
+    handleQuery(query);
   };
 
   return (

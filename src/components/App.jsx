@@ -22,23 +22,18 @@ export class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    if (this.shouldUpdate(prevState)) {
-      this.handleQuery(this.state.query, this.state.isLoadMore);
+    const { query, page } = this.state;
+
+    if (prevState.query !== query || prevState.page !== page) {
+      this.fetchImages(query, page);
     }
   }
-
-  shouldUpdate = prevState =>
-    prevState.query !== this.state.query || prevState.page !== this.state.page;
-
-  checkIsLoadMore = currentIsLoadMore => {
-    this.setState({ isLoadMore: currentIsLoadMore });
-  };
 
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  loadData = query => {
+  handleQuery = query => {
     this.setState(prevState => {
       if (prevState.query !== query) {
         return { query: query, page: 1 };
@@ -46,10 +41,12 @@ export class App extends Component {
     });
   };
 
-  sortData = data => {
+  sortData = (data, page) => {
+    const overwrite = page === 1;
+
     this.setState(prevState => ({
       images: [
-        ...prevState.images,
+        ...(overwrite ? [] : prevState.images),
         ...data.map(element => {
           return {
             id: element.id,
@@ -61,24 +58,17 @@ export class App extends Component {
     }));
   };
 
-  handleQuery = (query, isLoadMore) => {
-    // console.log('cum');
+  fetchImages = (query, page) => {
     this.setState({ loading: true });
 
-    getImageList(query, this.state.page)
+    getImageList(query, page)
       .then(response => {
         if (response.data.hits.length === 0) {
           alert(
             'Sorry, there are no images matching your search query. Please try again.'
           );
-        } else if (query.trim() === '') {
-          alert('Please, enter a non-empty query');
         } else {
-          if (!isLoadMore) {
-            this.setState(_ => ({ images: [] }));
-          }
-
-          this.sortData(response.data.hits);
+          this.sortData(response.data.hits, page);
         }
       })
       .catch(error => {
@@ -102,10 +92,7 @@ export class App extends Component {
   render() {
     return (
       <div className="App">
-        <Searchbar
-          loadData={this.loadData}
-          checkIsLoadMore={this.checkIsLoadMore}
-        />
+        <Searchbar handleQuery={this.handleQuery} />
 
         {this.state.loading && <Loader />}
 
@@ -114,14 +101,10 @@ export class App extends Component {
           getTargetImgID={this.getTargetImgID}
         />
 
-        {this.state.images.length >= 12 &&
+        {this.state.images.length >= perPage &&
           !this.state.loading &&
           this.state.images.length >= this.state.page * perPage && (
-            <Button
-              loadMore={this.loadMore}
-              checkIsLoadMore={this.checkIsLoadMore}
-              currentQuery={this.state.query}
-            />
+            <Button loadMore={this.loadMore} />
           )}
 
         {this.state.isModalOpen && (

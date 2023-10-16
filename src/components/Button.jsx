@@ -1,15 +1,6 @@
-export const Button = ({ loadMore, checkIsLoadMore, currentQuery }) => {
-  if (currentQuery === null || currentQuery === undefined) return;
-
-  const isLoadMore = true;
-
-  const handleClick = () => {
-    loadMore(isLoadMore);
-    checkIsLoadMore(isLoadMore);
-  };
-
+export const Button = ({ loadMore }) => {
   return (
-    <button className="load-more" type="button" onClick={handleClick}>
+    <button className="load-more" type="button" onClick={loadMore}>
       Load more
     </button>
   );
