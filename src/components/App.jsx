@@ -35,17 +35,15 @@ export class App extends Component {
   handleQuery = query => {
     this.setState(prevState => {
       if (prevState.query !== query) {
-        return { query: query, page: 1 };
+        return { images: [], query: query, page: 1 };
       }
     });
   };
 
   sortData = (data, page) => {
-    const overwrite = page === 1;
-
     this.setState(prevState => ({
       images: [
-        ...(overwrite ? [] : prevState.images),
+        ...prevState.images,
         ...data.map(element => {
           return {
             id: element.id,
